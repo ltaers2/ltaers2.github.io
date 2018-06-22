@@ -2,9 +2,67 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>구글 맵 기본</title>
+  <style>
+    .store{width: 1000px;margin: auto;}
+    .store-nav{margin: 1em 0;}
+    .store-nav a{display: inline-block;padding: 0.75em 1.5em;background-color: #F6F5EF;color: #333;font-weight: bold;text-decoration: none;margin-right: 0.5em;}
+    .store-nav a.active{background-color: #007042;color: #fff;}
+    #mapA{width: 100%;height: 600px;margin: auto;border: 1px solid #333;}
+  </style>
+  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=PPDLrgUbE2yVF0vUYsK5"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-  <h1>박승진 홈페이지</h1>
+  <div class="wrap">
+    <div class="container">
+      <div class="store">
+        <h1 id="a1">오시는 길</h1>
+        <div class="store-nav">
+          <a href="#" class="active">스타벅스 강남역 R점</a>
+          <a href="#">스타벅스 역삼점</a>
+          <a href="#">스타벅스 해운대점</a>
+        </div>
+        <div id="mapA"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    jQuery(function(){
+      var st=new Array([37.499014, 127.031022,37.497859,127.028568],[37.500643, 127.035267,37.500643, 127.035267],[35.160384, 129.162318,35.160384, 129.162318]);
+      
+      function starbucksPosition(x1,y1,x2,y2){
+        myMap=new naver.maps.Map(document.getElementById('mapA'),{
+          center:new naver.maps.LatLng(x1,y1),
+          zoom:12
+        });
+        opt1={
+          position:new naver.maps.LatLng(x2,y2),
+          map:myMap
+        }
+        new naver.maps.Marker(opt1);
+      }; //  스타벅스 매장 위치 확인
+      
+      $(window).on('load',function(){
+        starbucksPosition(st[0][0],st[0][1],st[0][2],st[0][3])
+      });
+      
+      $('.store-nav a').on('click',function(){
+        n=$('.store-nav a').index($(this));
+        $('.store-nav a').eq(n).addClass('active').siblings().removeClass('active');
+        starbucksPosition(st[n][0],st[n][1],st[n][2],st[n][3])
+      })
+      
+    }); //jQuery end
+// 37.499014, 127.031022 ,37.497859, 127.028568 
+    
+ 
+   /* 
+    window.addEventListener('load',function (){
+      starbucksPosition(37.499014, 127.031022,37.497859,127.028568)
+    })
+    window.addEventListener('load',titleChange)
+    */
+  </script>
 </body>
 </html>
